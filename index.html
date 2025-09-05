@@ -1868,44 +1868,45 @@ function updatePlaceholder(platform) {
     res.render('admin'); // 'admin.ejs' file views folder me
 });
 
-        // ✅ Function: cache-busting JSON fetch
-async function fetchJSON(file) {
-  const url = file + "?v=" + new Date().getTime(); // always unique
-  const response = await fetch(url, { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error("Failed to load " + file);
-  }
-  return await response.json();
+  // ================================
+// 🔹 Cache-busting JSON & index.html
+// ================================
+
+// Generic fetch with cache-busting
+async function fetchJSON(filePath) {
+    const url = filePath + "?v=" + new Date().getTime(); // add timestamp
+    const response = await fetch(url, { cache: "no-store" });
+    if (!response.ok) throw new Error(`Failed to fetch ${filePath}`);
+    return await response.json();
 }
 
-// ✅ Example usage
-async function loadData() {
-  try {
-    const currencies = await fetchJSON("currencies.json");
-    console.log("Currencies:", currencies);
+// Load all JSON files
+let currenciesData = {};
+let servicesData = {};
+let paymentsData = {};
 
-    const services = await fetchJSON("services.json");
-    console.log("Services:", services);
-
-    const payments = await fetchJSON("payments.json");
-    console.log("Payments:", payments);
-  } catch (error) {
-    console.error("Error loading data:", error);
-  }
+async function loadAllJSON() {
+    try {
+        currenciesData = await fetchJSON('currencies.json');
+        servicesData = await fetchJSON('services.json');
+        paymentsData = await fetchJSON('payments.json');
+        console.log('✅ All JSON files loaded:', currenciesData, servicesData, paymentsData);
+    } catch (error) {
+        console.error('❌ Error loading JSON files:', error);
+    }
 }
 
-// ✅ Make sure index.html also never caches
-(function forceFreshHTML() {
-  if (!window.location.href.includes("v=")) {
-    const freshURL = window.location.pathname + "?v=" + new Date().getTime();
-    window.location.replace(freshURL);
-  }
-})();
+// Call it on page load
+loadAllJSON();
 
-// ✅ Run
-loadData();
+// Optional: force reload of index.html if using back/forward navigation
+if (performance && performance.navigation.type === 2) {
+    window.location.reload(true);
+}
+
 
     </script>
 </body>
 </html>
+
 
