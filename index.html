@@ -1868,6 +1868,44 @@ function updatePlaceholder(platform) {
     res.render('admin'); // 'admin.ejs' file views folder me
 });
 
+        // ✅ Function: cache-busting JSON fetch
+async function fetchJSON(file) {
+  const url = file + "?v=" + new Date().getTime(); // always unique
+  const response = await fetch(url, { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error("Failed to load " + file);
+  }
+  return await response.json();
+}
+
+// ✅ Example usage
+async function loadData() {
+  try {
+    const currencies = await fetchJSON("currencies.json");
+    console.log("Currencies:", currencies);
+
+    const services = await fetchJSON("services.json");
+    console.log("Services:", services);
+
+    const payments = await fetchJSON("payments.json");
+    console.log("Payments:", payments);
+  } catch (error) {
+    console.error("Error loading data:", error);
+  }
+}
+
+// ✅ Make sure index.html also never caches
+(function forceFreshHTML() {
+  if (!window.location.href.includes("v=")) {
+    const freshURL = window.location.pathname + "?v=" + new Date().getTime();
+    window.location.replace(freshURL);
+  }
+})();
+
+// ✅ Run
+loadData();
+
     </script>
 </body>
 </html>
+
