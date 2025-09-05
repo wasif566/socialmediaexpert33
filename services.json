@@ -6,7 +6,7 @@
     "tiktok": { "followers": 650, "likes": 150, "views": 70, "comments": 1500 }
   },
   "INR": {
-    "instagram": { "followers": 350, "likes": 60, "views": 20, "comments": 500 },
+    "instagram": { "followers": 350, "likes": 40, "views": 20, "comments": 500 },
     "facebook": { "followers": 250, "postlikes": 120, "followerslikes": 550, "reactions": 150, "views": 80, "comments": 1800 },
     "youtube": { "subscribers": 1200, "likes": 100, "views": 80, "comments": 600 },
     "tiktok": { "followers": 320, "likes": 70, "views": 20, "comments": 500 }
@@ -30,3 +30,4 @@
     "tiktok": { "followers": 5.5, "likes": 3, "views": 1.5, "comments": 15 }
   }
 }
+
